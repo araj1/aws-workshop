@@ -272,7 +272,7 @@
 						"IpProtocol": "tcp",
 						"FromPort": "991",
 						"ToPort": "991",
-						"CidrIp": {
+						"SourceSecurityGroupId": {
 							"Ref": "ElbSecurityGroup"
 						}
 					}
@@ -323,6 +323,8 @@
                 "./install auto\n",
                 "cd /dev/shm\n",
                 "sudo aws s3 cp s3://idc-aws-session/deploy.sh  deploy.sh \n",
+								"wget https://github.com/araj1/aws-workshop/blob/master/elb/deploy.sh",
+								"chmod 777 deploy.sh"
                 ". /dev/shm/deploy.sh",
                 " || true ",
                 "\n",
@@ -394,7 +396,7 @@
 				},
 
 				"Listeners": [{
-					"InstancePort": "991",
+					"InstancePort": "80",
 					"InstanceProtocol": "TCP",
 					"LoadBalancerPort": "80",
 					"Protocol": "TCP"

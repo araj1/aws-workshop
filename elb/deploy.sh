@@ -13,15 +13,27 @@ sudo mkdir /app
 sudo mkfs /dev/xvdb
 sudo mount /dev/xvdb /app
 
-sudo aws s3 cp s3://idc-aws-session/health.conf health.conf
-sudo aws s3 cp s3://idc-aws-session/rewrite-global.conf rewrite-global.conf
-sudo aws s3 cp s3://idc-aws-session/index.html index.html
-sudo aws s3 cp s3://idc-aws-session/httpd-vhost.conf httpd-vhost.conf
-sudo aws s3 cp s3://idc-aws-session/httpd.conf httpd.conf
-sudo aws s3 cp s3://idc-aws-session/logFormat.conf logFormat.conf
+#sudo aws s3 cp s3://idc-aws-session/health.conf health.conf
+#sudo aws s3 cp s3://idc-aws-session/rewrite-global.conf rewrite-global.conf
+#sudo aws s3 cp s3://idc-aws-session/index.html index.html
+#sudo aws s3 cp s3://idc-aws-session/httpd-vhost.conf httpd-vhost.conf
+#sudo aws s3 cp s3://idc-aws-session/httpd.conf httpd.conf
+#sudo aws s3 cp s3://idc-aws-session/logFormat.conf logFormat.conf
+#sudo aws s3 cp s3://idc-aws-session/mod_security.conf mod_security.conf
+#sudo aws s3 cp s3://idc-aws-session/httpd httpd
+
+wget https://github.com/araj1/aws-workshop/blob/master/elb/health.conf
+wget https://github.com/araj1/aws-workshop/blob/master/elb/rewrite-global.conf
+wget https://github.com/araj1/aws-workshop/blob/master/elb/index.html
+wget https://github.com/araj1/aws-workshop/blob/master/elb/httpd-vhost.conf
+wget https://github.com/araj1/aws-workshop/blob/master/elb/httpd.conf
+wget https://github.com/araj1/aws-workshop/blob/master/elb/logFormat.conf
+wget https://github.com/araj1/aws-workshop/blob/master/elb/mod_security.conf
+wget https://github.com/araj1/aws-workshop/blob/master/elb/httpd
+
+
 #sudo aws s3 cp s3://idc-aws-session/ssl.conf ssl.conf
-sudo aws s3 cp s3://idc-aws-session/mod_security.conf mod_security.conf
-sudo aws s3 cp s3://idc-aws-session/httpd httpd
+
 
 
 sudo yum install httpd-2.4.6 -y

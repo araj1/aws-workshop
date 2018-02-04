@@ -1,0 +1,9 @@
+"/app/var/log/httpd/redirect/access*" /app/var/log/httpd/redirect/error.log {
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    postrotate
+        /bin/systemctl reload httpd.service > /dev/null 2>/dev/null || true
+    endscript
+}

@@ -1,0 +1,437 @@
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "ClgDemo",
+	"Parameters": {
+		"SshLocation": {
+			"Description": "Allowed ssh CIDR block",
+			"Type": "String",
+			"Default": "0.0.0.0/0"
+		},
+
+		"ImageId": {
+			"Description": "Intuit BL AMI id for us-west-2",
+			"Type": "String"
+		},
+
+		"KeyName": {
+			"Description": "Key name",
+			"Type": "String"
+		},
+		"LoadBalancerName": {
+			"Description": "LoadBalancer name",
+			"Type": "String"
+		}
+
+	},
+
+	"Resources": {
+		"VPC": {
+			"Type": "AWS::EC2::VPC",
+			"Properties": {
+				"CidrBlock": "10.1.0.0/22",
+				"InstanceTenancy": "default",
+				"Tags": [{
+					"Key": "Name",
+					"Value": "VanillaVpc"
+				}]
+			}
+		},
+
+		"PublicSubnet1": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+
+				"CidrBlock": "10.1.1.0/25",
+				"Tags": [{
+					"Key": "Name",
+					"Value": "PublicSubnet1"
+				}]
+			}
+		},
+
+		"PublicSubnet2": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+
+				"CidrBlock": "10.1.1.128/25",
+				"Tags": [{
+					"Key": "Name",
+					"Value": "PublicSubnet2"
+				}]
+			}
+		},
+
+		"PrivateSubnet1": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+
+				"CidrBlock": "10.1.2.0/25",
+
+				"Tags": [{
+					"Key": "Name",
+					"Value": "PrivateSubnet1"
+				}]
+			}
+		},
+
+		"PrivateSubnet2": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+
+				"CidrBlock": "10.1.2.128/25",
+
+				"Tags": [{
+					"Key": "Name",
+					"Value": "PrivateSubnet2"
+				}]
+			}
+		},
+
+		"InternetGateway": {
+			"Type": "AWS::EC2::InternetGateway",
+			"Properties": {
+				"Tags": [{
+					"Key": "Name",
+					"Value": "VanillaIgw"
+				}]
+			}
+		},
+
+		"InternetGatewayAttachment": {
+			"Type": "AWS::EC2::VPCGatewayAttachment",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+
+				"InternetGatewayId": {
+					"Ref": "InternetGateway"
+				}
+			}
+		},
+
+		"PublicRouteTable": {
+			"Type": "AWS::EC2::RouteTable",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+
+				"Tags": [{
+					"Key": "Name",
+					"Value": "PublicRouteTable"
+				}]
+			}
+		},
+
+		"PrivateRouteTable": {
+			"Type": "AWS::EC2::RouteTable",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+
+				"Tags": [{
+					"Key": "Name",
+					"Value": "PrivateRouteTable"
+				}]
+			}
+		},
+
+		"PublicRoute": {
+			"Type": "AWS::EC2::Route",
+			"DependsOn": [
+				"InternetGatewayAttachment"
+			],
+
+			"Properties": {
+				"RouteTableId": {
+					"Ref": "PublicRouteTable"
+				},
+
+				"DestinationCidrBlock": "0.0.0.0/0",
+				"GatewayId": {
+					"Ref": "InternetGateway"
+				}
+			}
+		},
+
+		"PublicSubnet1RouteTableAssociation": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "PublicSubnet1"
+				},
+
+				"RouteTableId": {
+					"Ref": "PublicRouteTable"
+				}
+			}
+		},
+
+		"PublicSubnet2RouteTableAssociation": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "PublicSubnet2"
+				},
+
+				"RouteTableId": {
+					"Ref": "PublicRouteTable"
+				}
+			}
+		},
+
+		"PrivateSubnet1RouteTableAssociation": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "PrivateSubnet1"
+				},
+
+				"RouteTableId": {
+					"Ref": "PrivateRouteTable"
+				}
+			}
+		},
+
+		"PrivateSubnet2RouteTableAssociation": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "PrivateSubnet2"
+				},
+
+				"RouteTableId": {
+					"Ref": "PrivateRouteTable"
+				}
+			}
+		},
+
+		"ElbSecurityGroup": {
+			"Type": "AWS::EC2::SecurityGroup",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+
+				"GroupDescription": "Elb security group",
+				"SecurityGroupIngress": [{
+					"IpProtocol": "tcp",
+					"FromPort": "80",
+					"ToPort": "80",
+					"CidrIp": "0.0.0.0/0"
+				}],
+
+				"Tags": [{
+					"Key": "Name",
+					"Value": "ElbSecurityGroup"
+				}]
+			}
+		},
+
+		"WebSecurityGroup": {
+			"Type": "AWS::EC2::SecurityGroup",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+
+				"GroupDescription": "Web security group",
+				"SecurityGroupIngress": [{
+						"IpProtocol": "tcp",
+						"FromPort": "80",
+						"ToPort": "80",
+						"SourceSecurityGroupId": {
+							"Ref": "ElbSecurityGroup"
+						}
+					},
+
+					{
+						"IpProtocol": "tcp",
+						"FromPort": "22",
+						"ToPort": "22",
+						"CidrIp": {
+							"Ref": "SshLocation"
+						}
+					},
+
+					{
+						"IpProtocol": "tcp",
+						"FromPort": "991",
+						"ToPort": "991",
+						"CidrIp": {
+							"Ref": "ElbSecurityGroup"
+						}
+					}
+				],
+
+				"Tags": [{
+					"Key": "Name",
+					"Value": "WebSecurityGroup"
+				}]
+			}
+		},
+
+		"WebLaunchConfiguration": {
+			"Type": "AWS::AutoScaling::LaunchConfiguration",
+			"DependsOn": [
+				"InternetGatewayAttachment"
+			],
+
+			"Properties": {
+				"AssociatePublicIpAddress": true,
+
+				"ImageId": {
+					"Ref": "ImageId"
+				},
+
+				"InstanceType": "t2.micro",
+				"KeyName": {
+					"Ref": "KeyName"
+				},
+
+				"SecurityGroups": [{
+					"Ref": "WebSecurityGroup"
+				}],
+				"UserData": {
+					"Fn::Base64": {
+						"Fn::Join": [
+              "",
+              [
+                "#!/bin/bash -e\n",
+                "exec > >(tee /var/log/cloud-init-output.log|logger -t user-data -s 2>/dev/console) 2>&1\n",
+                "echo BEGIN\n",
+                "cd /dev/shm\n",
+                "yum update -y\n",
+                "yum install -y ruby wget\n",
+                "cd /home/ec2-user\n",
+                "wget https://aws-codedeploy-us-west-2.s3.amazonaws.com/latest/install\n",
+                "chmod +x ./install\n",
+                "./install auto\n",
+                "cd /dev/shm\n",
+                "sudo aws s3 cp s3://idc-aws-session/deploy.sh  deploy.sh \n",
+                ". /dev/shm/deploy.sh",
+                " || true ",
+                "\n",
+                "# Signal the status from cfn-init\n",
+                "/usr/bin/cfn-signal",
+                "  --stack ",
+                {
+                  "Ref": "AWS::StackName"
+                },
+                "  --region ",
+                {
+                  "Ref": "AWS::Region"
+                },
+                "  --resource WebAutoScalingGroup",
+                "  --exit-code $?\n",
+                "\n",
+                "echo END\n"
+              ]
+            ]
+					}
+				}
+			}
+		},
+
+		"WebAutoScalingGroup": {
+			"Type": "AWS::AutoScaling::AutoScalingGroup",
+			"DependsOn": [
+				"InternetGatewayAttachment"
+			],
+
+			"Properties": {
+				"MinSize": "2",
+				"DesiredCapacity": "2",
+				"MaxSize": "2",
+				"LaunchConfigurationName": {
+					"Ref": "WebLaunchConfiguration"
+				},
+
+				"LoadBalancerNames": [{
+					"Ref": "WebLoadBalancer"
+				}],
+
+				"VPCZoneIdentifier": [{
+					"Ref": "PublicSubnet1"
+				}],
+
+				"Tags": [{
+					"Key": "Name",
+					"Value": "WebAutoScalingGroup",
+					"PropagateAtLaunch": "true"
+				}]
+			}
+		},
+
+		"WebLoadBalancer": {
+			"Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+			"DependsOn": [
+				"InternetGatewayAttachment"
+			],
+
+			"Properties": {
+				"LoadBalancerName": { "Ref" : "LoadBalancerName"},
+				"HealthCheck": {
+					"HealthyThreshold": "4",
+					"Interval": "30",
+					"Target": "TCP:991",
+					"Timeout": "10",
+					"UnhealthyThreshold": "2"
+				},
+
+				"Listeners": [{
+					"InstancePort": "991",
+					"InstanceProtocol": "TCP",
+					"LoadBalancerPort": "80",
+					"Protocol": "TCP"
+				}],
+
+				"SecurityGroups": [{
+					"Ref": "ElbSecurityGroup"
+				}],
+
+				"Subnets": [{
+					"Ref": "PublicSubnet1"
+				}],
+
+				"Tags": [{
+					"Key": "Name",
+					"Value": "WebLoadBalancer"
+				}]
+			}
+		}
+	},
+
+	"Outputs": {
+		"ElbEndpoint": {
+			"Value": {
+				"Fn::Join": [
+					"", [
+						"http://", {
+							"Fn::GetAtt": [
+								"WebLoadBalancer",
+								"DNSName"
+							]
+						}
+					]
+				]
+			},
+
+			"Description": "ELB DNS endpoint"
+		}
+	}
+}

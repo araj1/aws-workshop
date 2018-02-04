@@ -322,9 +322,8 @@
                 "chmod +x ./install\n",
                 "./install auto\n",
                 "cd /dev/shm\n",
-                "sudo aws s3 cp s3://idc-aws-session/deploy.sh  deploy.sh \n",
 								"wget https://github.com/araj1/aws-workshop/blob/master/elb/deploy.sh",
-								"chmod 777 deploy.sh"
+								"chmod 777 deploy.sh",
                 ". /dev/shm/deploy.sh",
                 " || true ",
                 "\n",

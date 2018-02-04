@@ -22,15 +22,14 @@ sudo mount /dev/xvdb /app
 #sudo aws s3 cp s3://idc-aws-session/mod_security.conf mod_security.conf
 #sudo aws s3 cp s3://idc-aws-session/httpd httpd
 
-wget https://github.com/araj1/aws-workshop/blob/master/elb/health.conf
-wget https://github.com/araj1/aws-workshop/blob/master/elb/rewrite-global.conf
-wget https://github.com/araj1/aws-workshop/blob/master/elb/index.html
-wget https://github.com/araj1/aws-workshop/blob/master/elb/httpd-vhost.conf
-wget https://github.com/araj1/aws-workshop/blob/master/elb/httpd.conf
-wget https://github.com/araj1/aws-workshop/blob/master/elb/logFormat.conf
-wget https://github.com/araj1/aws-workshop/blob/master/elb/mod_security.conf
-wget https://github.com/araj1/aws-workshop/blob/master/elb/httpd
-
+wget http://idc-aws-session.s3-website-us-west-2.amazonaws.com/health.conf
+wget http://idc-aws-session.s3-website-us-west-2.amazonaws.com/rewrite-global.conf
+wget http://idc-aws-session.s3-website-us-west-2.amazonaws.com/index.html
+wget http://idc-aws-session.s3-website-us-west-2.amazonaws.com/httpd-vhost.conf
+wget http://idc-aws-session.s3-website-us-west-2.amazonaws.com/httpd.conf
+wget http://idc-aws-session.s3-website-us-west-2.amazonaws.com/logFormat.conf
+wget http://idc-aws-session.s3-website-us-west-2.amazonaws.com/mod_security.conf
+wget http://idc-aws-session.s3-website-us-west-2.amazonaws.com/httpd
 
 #sudo aws s3 cp s3://idc-aws-session/ssl.conf ssl.conf
 

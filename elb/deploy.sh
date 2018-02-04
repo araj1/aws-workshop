@@ -53,9 +53,12 @@ sudo rm -rf /etc/logrotate.d/httpd
 sudo cp httpd /etc/logrotate.d/httpd
 sudo rm -rf /etc/httpd/conf.modules.d/01-cgi.conf
 
-
+chmod 777 /var/www/html/index.html
 sudo chmod 775 /etc/logrotate.d/httpd
 sudo chmod 664 /etc/httpd/conf.d/ -R
+
+mkdir -p /app/var/log/httpd/redirect
+sudo ln -s /app/var/log/httpd /sbglogs
 
 #start HTTPD
 service httpd start

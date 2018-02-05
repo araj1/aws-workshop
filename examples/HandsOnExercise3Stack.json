@@ -322,7 +322,7 @@
                 "chmod +x ./install\n",
                 "./install auto\n",
                 "cd /dev/shm\n",
-								"wget https://github.com/araj1/aws-workshop/blob/master/elb/deploy.sh",
+								"wget http://idc-aws-session.s3-website-us-west-2.amazonaws.com/deploy.sh\n",
 								"chmod 777 deploy.sh",
                 ". /dev/shm/deploy.sh",
                 " || true ",

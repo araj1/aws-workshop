@@ -43,7 +43,7 @@
 				"VpcId": {
 					"Ref": "VPC"
 				},
-
+       "AvailabilityZone" : "us-west-2a",
 				"CidrBlock": "10.1.1.0/25",
 				"Tags": [{
 					"Key": "Name",
@@ -58,7 +58,7 @@
 				"VpcId": {
 					"Ref": "VPC"
 				},
-
+				"AvailabilityZone" : "us-west-2b",
 				"CidrBlock": "10.1.1.128/25",
 				"Tags": [{
 					"Key": "Name",
@@ -73,7 +73,7 @@
 				"VpcId": {
 					"Ref": "VPC"
 				},
-
+				"AvailabilityZone" : "us-west-2a",
 				"CidrBlock": "10.1.2.0/25",
 
 				"Tags": [{
@@ -91,7 +91,7 @@
 				},
 
 				"CidrBlock": "10.1.2.128/25",
-
+				"AvailabilityZone" : "us-west-2b",
 				"Tags": [{
 					"Key": "Name",
 					"Value": "PrivateSubnet2"
@@ -323,7 +323,7 @@
                 "./install auto\n",
                 "cd /dev/shm\n",
 								"wget http://idc-aws-session.s3-website-us-west-2.amazonaws.com/deploy.sh\n",
-								"chmod 777 deploy.sh",
+								"chmod 777 deploy.sh\n",
                 ". /dev/shm/deploy.sh",
                 " || true ",
                 "\n",

@@ -9,3 +9,5 @@ Ex: amit-stack-842351824.us-west-2.elb.amazonaws.com/redirect/?https://www.hotst
 6. WAF Details :-
   https://docs.aws.amazon.com/waf/latest/developerguide/web-acl-rules.html
   Use Regex patterns test for maximum possible of domains and user-agents in the list for the redirect-rules
+7. WAF Limits on Number of rules :- docs.aws.amazon.com/waf/latest/developerguide/limits.html
+  

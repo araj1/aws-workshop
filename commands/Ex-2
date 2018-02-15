@@ -1,0 +1,10 @@
+aws --version
+
+aws ec2 describe-instances
+aws configure
+
+aws ec2 describe-instances
+
+aws ec2 run-instances  --image-id <ImageId> --count 1 --instance-type t2.micro --key-name <KeyNameYouCreated> --subnet-id <YourSubnetID>
+
+aws ec2 terminate-instances --instance-ids <instanceid>

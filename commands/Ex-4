@@ -1,0 +1,3 @@
+aws cloudformation create-stack --stack-name <StackName> --template-url https://s3-us-west-2.amazonaws.com/clgdemo/HandsOnExerciseStack.json --parameters ParameterKey=LoadBalancerName,ParameterValue=<ElbName> ParameterKey=KeyName,ParameterValue=<KeyName> ParameterKey=ImageId,ParameterValue=<imageId>
+
+aws cloudformation delete-stack --stack-name <Stackname>

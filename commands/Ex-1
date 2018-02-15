@@ -1,0 +1,2 @@
+chmod 400 *.pem
+ssh -i <absolute path of YourKeyFileName> ec2-user@<IPOfTheInstanceYouCreated>

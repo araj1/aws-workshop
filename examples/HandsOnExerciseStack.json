@@ -312,7 +312,7 @@
 							"", [
 								"#!/bin/bash -e\n",
 								"curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash \n",
-								"curl https://s3-us-west-2.amazonaws.com/aws-idc-session/app-no-db.tar.gz -O \n",
+								"curl https://s3-us-west-2.amazonaws.com/idc-aws-session/app-no-db.tar.gz -O \n",
 								"sudo tar -xzvf app-no-db.tar.gz \n",
 								"sudo chmod -R 777 /app-no-db \n",
 								"sudo su \n",
